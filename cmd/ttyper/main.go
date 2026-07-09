@@ -17,7 +17,8 @@ func main() {
 			timeChoice := ui.ShowTimeMenu()
 			passageset := data.RandomParagraphPick()
 			result := test.Start(passageset.Passages, passageset.Current, timeChoice)
-			fmt.Println("WPM: ", result.WPM)
+			fmt.Println("GWPM: ", result.GWPM)
+			fmt.Println("NWPM: ", result.NWPM)
 			fmt.Println("Accuracy: ", result.Accuracy)
 			fmt.Println("TimeFormat: ", timeChoice)
 		} else if choice == 2 {
