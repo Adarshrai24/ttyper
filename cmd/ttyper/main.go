@@ -10,14 +10,13 @@ import(
 )
 
 func main() {
+	db, err := storage.Open()
+	if err != nil {
+		log.Fatal(err) 
+	}
+	defer db.Close()
 	for {
 		fmt.Println("---------------Welcome to ttyper------------------")
-		
-		db, err := storage.Open()
-		if err != nil {
-			log.Fatal(err) 
-		}
-		defer db.Close()
 
 		choice := ui.ShowMainMenu()
 		
@@ -41,26 +40,18 @@ func main() {
 			ui.PrintHistory(history)
 		} else if choice == 3 {
 			// for starting I am for now ignoring errors will handle later properly
-			maxStats15Sec,_ := storage.MaximumStats(db, 15)
-			maxStats30Sec,_ := storage.MaximumStats(db, 30)
-			maxStats60Sec,_ := storage.MaximumStats(db, 60)
-			maxStats120Sec,_ := storage.MaximumStats(db, 120)
-			avgStats15Sec,_ := storage.AverageStats(db, 15)
-			avgStats30Sec,_ := storage.AverageStats(db, 30)
-			avgStats60Sec,_ := storage.AverageStats(db, 60)
-			avgStats120Sec,_ := storage.AverageStats(db, 120)
-			maxStats := []storage.Stats{
-				maxStats15Sec,
-				maxStats30Sec,
-				maxStats60Sec,
-				maxStats120Sec,
-			}
-			avgStats := []storage.Stats{
-				avgStats15Sec,
-				avgStats30Sec,
-				avgStats60Sec,
-				avgStats120Sec,
-			}
+			durations := []int{15, 30, 60, 120}
+
+			var maxStats []storage.Stats
+			var avgStats []storage.Stats
+			
+			for _, d := range durations {
+				maximum, _ := storage.MaximumStats(db, d)
+				average, _ := storage.AverageStats(db, d)
+
+				maxStats = append(maxStats, maximum)
+				avgStats = append(avgStats, average)
+			}	
 			ui.PrintMaxStats()
 			ui.PrintStats(maxStats)
 			ui.PrintAvgStats()
