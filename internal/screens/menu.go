@@ -51,7 +51,7 @@ func (m MenuModel) Update(msg tea.Msg) (MenuModel, tea.Cmd) {
 }
 
 func (m MenuModel) View() tea.View {
-	s := "Welcome To TTYPER\n\n"
+	s := "Welcome To TermType\n\n"
 
 	for i, choice := range m.choices {
 		cursor := " "
